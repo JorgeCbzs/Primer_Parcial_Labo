@@ -1,0 +1,36 @@
+{
+  "partidas": [
+    {
+      "Partida": 1,
+      "Puntaje": 7000
+    },
+    {
+      "Partida": 2,
+      "Puntaje": 3000
+    },
+    {
+      "Partida": 3,
+      "Puntaje": 5000
+    },
+    {
+      "Partida": 4,
+      "Puntaje": 5000
+    },
+    {
+      "Partida": 5,
+      "Puntaje": 5000
+    },
+    {
+      "Partida": 6,
+      "Puntaje": 12000
+    },
+    {
+      "Partida": 7,
+      "Puntaje": 2000
+    },
+    {
+      "Partida": 8,
+      "Puntaje": 2000
+    }
+  ]
+}

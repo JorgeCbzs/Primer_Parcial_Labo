@@ -1,8 +1,75 @@
-import pygame
+import pygame,json
 from pygame.locals import *
 from random import randint
 from config import *
 from utils import *
+
+
+
+
+
+
+
+
+def guardar_puntaje(puntaje):
+    """
+    Guarda un puntaje en un archivo JSON.
+
+    Parameters:
+    puntaje (int): El puntaje a guardar.
+
+    Returns:
+    None
+    """
+    # Nombre del archivo JSON
+    puntos = 'src/puntajes.json'
+
+    try:
+        with open(puntos, 'r') as archivo:
+            datos = json.load(archivo)
+    except FileNotFoundError:
+
+        datos = {'partidas': []}
+
+    numero_partida = len(datos['partidas']) + 1
+
+
+    datos['partidas'].append({'Partida': numero_partida, 'Puntaje': puntaje})
+
+
+    with open(puntos, 'w') as archivo:
+        json.dump(datos, archivo, indent=2)
+
+
+def obtener_maximo_puntaje():
+    """
+    Obtiene el puntaje máximo almacenado en un archivo JSON.
+
+    Returns:
+    int: El puntaje máximo.
+    """
+    archivo_json = 'src/puntajes.json'
+
+    try:
+        with open(archivo_json, 'r') as archivo:
+            datos = json.load(archivo)
+
+            # Obtener la lista de puntajes
+            puntajes = [partida['Puntaje'] for partida in datos['partidas']]
+
+            n = len(puntajes)
+            for i in range(n - 1):
+                for j in range(0, n - i - 1):
+                    if puntajes[j] < puntajes[j + 1]:
+                        puntajes[j], puntajes[j + 1] = puntajes[j + 1], puntajes[j]
+
+            maximo_puntaje = puntajes[0]
+
+            return maximo_puntaje
+
+    except FileNotFoundError:
+        print(f'El archivo {archivo_json} no existe.')
+
 
 
 
@@ -160,8 +227,8 @@ def game_over(screen,puntos,maximo_puntaje):
         int: El nuevo máximo puntaje.
     """
     game_over_sound.play()
-    if puntos > maximo_puntaje:
-        maximo_puntaje = puntos
+    guardar_puntaje(puntos)
+    maximo_puntaje = obtener_maximo_puntaje()
     screen.fill(BLACK)
     mostrar_texto(screen, "Game Over", WIDTH_SCREEN // 2, HEIGHT_SCREEN // 2, 50, RED)
     mostrar_texto(screen, f"Puntos: {puntos}", WIDTH_SCREEN // 2, HEIGHT_SCREEN // 2 + 200, 18, AZUL)
@@ -169,6 +236,7 @@ def game_over(screen,puntos,maximo_puntaje):
     pygame.display.flip()
     pygame.mixer.music.stop()
     pygame.time.wait(4000)
+    
     return maximo_puntaje
 
 
@@ -279,3 +347,6 @@ def dibujar_objects(superficie,objects:list):
         else:
             pygame.draw.rect(
                 superficie, objeto["color"], objeto['rect'], objeto["borde"], objeto["radio"])
+
+
+

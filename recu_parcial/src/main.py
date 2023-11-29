@@ -194,6 +194,7 @@ while running:
         screen.blit(player["imagen"], player["rect"])
         screen.blit(texto_puntos, rect_texto_puntos)
         pygame.display.flip()
+        
 
 pygame.quit()
 exit()
